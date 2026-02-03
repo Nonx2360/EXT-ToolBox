@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: #16213e;
+    border-bottom: 1px solid #0f3460;
+    flex-shrink: 0;
+}
+
+.toolbar-title {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #374151;
+    color: #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.crop-wrapper {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.crop-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+    user-select: none;
+}
+
+.crop-container img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.crop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.crop-overlay.active {
+    pointer-events: auto;
+}
+
+.crop-selection {
+    position: absolute;
+    border: 2px dashed #667eea;
+    background: transparent;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+    cursor: crosshair;
+    display: none;
+}
+
+.crop-selection.visible {
+    display: block;
+}
+
+.status {
+    padding: 10px 20px;
+    font-size: 13px;
+    color: #10b981;
+    text-align: center;
+    min-height: 24px;
+}
+
+.status.error {
+    color: #ef4444;
+}

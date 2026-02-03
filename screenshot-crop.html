@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop screenshot – Tools Box</title>
+    <link rel="stylesheet" href="screenshot-crop.css">
+</head>
+<body>
+    <div class="toolbar">
+        <span class="toolbar-title">Drag to select area, then copy</span>
+        <div class="toolbar-actions">
+            <button id="copy-btn" class="btn btn-primary">Copy image</button>
+            <button id="cancel-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+    <div class="crop-wrapper">
+        <div class="crop-container" id="crop-container">
+            <img id="screenshot-img" alt="Screenshot" />
+            <div class="crop-overlay" id="crop-overlay">
+                <div class="crop-selection" id="crop-selection"></div>
+            </div>
+        </div>
+    </div>
+    <div id="status" class="status"></div>
+
+    <script src="screenshot-crop.js"></script>
+</body>
+</html>
