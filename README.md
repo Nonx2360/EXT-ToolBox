@@ -1,72 +1,44 @@
-# Tools Box - Browser Extension
+# EXT-ToolBox (Tools Box)
 
-A clean, ad-free browser extension toolbox featuring a QR code generator and more tools to come.
+A clean, ad-free browser extension toolbox with QR code generator, color picker, and screenshot crop.
 
 ## Features
 
-- ✅ **QR Code Generator** - Generate QR codes from any text or URL
-- ✅ **No Ads** - Completely ad-free experience
-- ✅ **Download & Copy** - Download QR codes as PNG or copy to clipboard
-- ✅ **Modern UI** - Beautiful, clean interface
+- **QR Code Generator** – Generate QR codes from any text or URL (download or copy)
+- **Color Picker** – Pick colors from any web page (EyeDropper API)
+- **Screenshot & crop** – Crosshair selection on the page, crop area, copy image to clipboard
+- **No ads** – Completely ad-free
 
 ## Installation
 
 ### Chrome / Edge / Brave
 
-1. Download or clone this repository
-2. Open your browser and navigate to:
-   - Chrome: `chrome://extensions/`
-   - Edge: `edge://extensions/`
-   - Brave: `brave://extensions/`
-3. Enable **Developer mode** (toggle in top-right corner)
-4. Click **Load unpacked**
-5. Select the `EXT-ToolBox` folder
-6. The extension icon should appear in your toolbar
+1. Clone or download this repo
+2. Open `chrome://extensions/` (or `edge://extensions/`, `brave://extensions/`)
+3. Turn on **Developer mode**
+4. Click **Load unpacked** and select the `EXT-ToolBox` folder
 
 ### Firefox
 
-1. Download or clone this repository
-2. Open Firefox and navigate to `about:debugging`
-3. Click **This Firefox**
-4. Click **Load Temporary Add-on**
-5. Select the `manifest.json` file from the `EXT-ToolBox` folder
+1. Open `about:debugging` → **This Firefox** → **Load Temporary Add-on**
+2. Select `manifest.json` in the `EXT-ToolBox` folder
 
 ## Usage
 
-1. Click the Tools Box icon in your browser toolbar
-2. Enter any text or URL in the input field
-3. Click **Generate QR Code**
-4. Download or copy the generated QR code
+- **QR Code**: Enter text/URL → Generate → Download or Copy
+- **Color Picker**: Pick color from web → copy Hex or RGB
+- **Screenshot**: Click “Capture & crop area” → cursor becomes + → drag to select → cropped image is copied
 
-## Project Structure
+## Project structure
 
-```
-EXT-ToolBox/
-├── manifest.json       # Extension configuration
-├── popup.html         # Main UI
-├── popup.css          # Styles
-├── popup.js           # Logic and QR code generation
-├── qrcode.min.js      # QR code library (ad-free)
-├── icons/             # Extension icons
-└── README.md          # This file
-```
-
-## Creating Icons
-
-If you need to create icons, you can use any image editor to create:
-- `icon16.png` - 16x16 pixels
-- `icon48.png` - 48x48 pixels  
-- `icon128.png` - 128x128 pixels
-
-Or use an online tool like [Favicon Generator](https://favicon.io/) to generate icons from text or an image.
-
-## Development
-
-This extension uses:
-- **Manifest V3** - Latest Chrome extension standard
-- **qrcode-generator** - Lightweight, ad-free QR code library
-- **Vanilla JavaScript** - No frameworks, fast and lightweight
+- `manifest.json` – Extension config
+- `popup.html` / `popup.css` / `popup.js` – Popup UI and logic
+- `content-crop.js` – In-page crop overlay (crosshair)
+- `background.js` – Capture + open crop page
+- `screenshot-crop.html/js/css` – Crop result and copy
+- `qrcode.min.js` – QR library
+- `icons/` – Extension icons
 
 ## License
 
-Free to use and modify.
+MIT (see LICENSE).
