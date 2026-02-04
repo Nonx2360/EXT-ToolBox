@@ -15,11 +15,13 @@
     function showStatus(msg, isError) {
         statusEl.textContent = msg;
         statusEl.classList.toggle('error', !!isError);
+        statusEl.classList.add('show');
     }
 
     function clearStatus() {
         statusEl.textContent = '';
         statusEl.classList.remove('error');
+        statusEl.classList.remove('show');
     }
 
     function overlayCoords(e) {
@@ -114,6 +116,74 @@
         window.close();
         if (!window.closed) chrome.tabs.getCurrent(function (tab) { if (tab) chrome.tabs.remove(tab.id); });
     });
+
+    // --- Text extraction (OCR) ---
+    const extractTextBtn = document.getElementById('extract-text-btn');
+    const extractedTextArea = document.getElementById('extracted-text');
+    const copyTextBtn = document.getElementById('copy-text-btn');
+
+    function getImageSourceForOCR() {
+        let crop = getCropRectInImageCoords();
+        const hasSelection = selection.classList.contains('visible') && crop.width >= 1 && crop.height >= 1;
+        if (!hasSelection) {
+            crop = { x: 0, y: 0, width: imageNaturalWidth, height: imageNaturalHeight };
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+        return canvas;
+    }
+
+    if (extractTextBtn) {
+        extractTextBtn.addEventListener('click', async function () {
+            if (!imageNaturalWidth || typeof Tesseract === 'undefined') {
+                showStatus('OCR not ready or image not loaded.', true);
+                return;
+            }
+            extractTextBtn.disabled = true;
+            extractedTextArea.value = '';
+            showStatus('Extracting text…');
+            try {
+                const workerPath = typeof chrome !== 'undefined' && chrome.runtime
+                    ? chrome.runtime.getURL('lib/worker.min.js')
+                    : 'lib/worker.min.js';
+                const result = await Tesseract.recognize(getImageSourceForOCR(), 'eng+tha', {
+                    workerPath: workerPath,
+                    corePath: chrome.runtime.getURL('lib/tesseract-core-lstm.wasm.js'),
+                    langPath: chrome.runtime.getURL('lib/'),
+                    workerBlobURL: false,
+                    gzip: true,
+                    logger: function (m) {
+                        if (m.status) showStatus('OCR: ' + m.status);
+                    }
+                });
+                const text = (result && result.data && result.data.text) ? result.data.text.trim() : '';
+                extractedTextArea.value = text || '(No text detected)';
+                copyTextBtn.disabled = !text;
+                showStatus(text ? 'Text extracted. You can copy it below.' : 'No text found in selection.');
+                setTimeout(clearStatus, 2500);
+            } catch (err) {
+                showStatus('OCR failed: ' + (err.message || err), true);
+            }
+            extractTextBtn.disabled = false;
+        });
+    }
+
+    if (copyTextBtn) {
+        copyTextBtn.addEventListener('click', async function () {
+            const text = extractedTextArea.value;
+            if (!text || text === '(No text detected)') return;
+            try {
+                await navigator.clipboard.writeText(text);
+                showStatus('Text copied to clipboard.');
+                setTimeout(clearStatus, 2000);
+            } catch (err) {
+                showStatus('Failed to copy: ' + (err.message || err), true);
+            }
+        });
+    }
 
     let pendingRect = null;
     let pendingDpr = 1;
